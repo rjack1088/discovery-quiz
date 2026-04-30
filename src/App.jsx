@@ -42,7 +42,7 @@ const questions = {
 const productMap = {
   focus: "Nutrilite™ Ultra Focus + Energy Packs",
   energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)",
-  protein: "XS™ Protein Bars (Peanut Butter & Berry)",
+  protein: "XS™ Protein Bars (Peanut Butter & Chocolate Berry)",
   cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner",
   personal: "Glister™ Multi-Action & G&H Body Care",
   skincare: "Artistry Studio™ Skincare Essentials",
@@ -54,6 +54,7 @@ export default function App() {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState({});
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleAnswer = (weight) => {
@@ -140,14 +141,23 @@ export default function App() {
                   <input type="hidden" name="category" value={path} />
 
                   <p className="text-sm text-slate-500 font-bold leading-relaxed mb-6">
-                    Enter your email below and Ryan or Lena will reach out with your Product Guide and delivery details!
+                    Enter your name below to submit your results, and Ryan or Lena will be in touch with you shortly!
                   </p>
                   
                   <input 
+                    type="text" 
+                    name="name"
+                    required
+                    placeholder="Your Name"
+                    className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)}
+                  />
+
+                  <input 
                     type="email" 
                     name="email"
-                    required
-                    placeholder="Email Address"
+                    placeholder="Email (Optional)"
                     className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)}
@@ -168,7 +178,7 @@ export default function App() {
                 </div>
                 <h2 className="text-2xl font-black mb-4 tracking-tighter">SUCCESS!</h2>
                 <p className="text-slate-600 font-bold px-4 leading-relaxed">
-                  Thanks for checking this out. <br/>
+                  Thanks, <span className="text-slate-900">{name}</span>! <br/>
                   <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly based on your results!
                 </p>
               </div>
