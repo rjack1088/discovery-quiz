@@ -41,10 +41,10 @@ const questions = {
 
 const productMap = {
   focus: "Nutrilite™ Ultra Focus + Energy Packs",
-  energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)",
+  energy: "XS™ Energy Drinks (16 different flavors!)",
   protein: "XS™ Protein Bars (Peanut Butter & Chocolate Berry)",
-  cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner",
-  personal: "Glister™ Multi-Action & G&H Body Care",
+  cleaning: "Amway Home™ L.O.C.™ Multi-Purpose Wipes",
+  personal: "Glister™ Multi-Action Toothpaste & G&H Body Care",
   skincare: "Artistry Studio™ Skincare Essentials",
   hydration: "XS™ CocoWater Hydration Drink Mix"
 };
