@@ -42,7 +42,7 @@ const questions = {
 const productMap = {
   focus: "Nutrilite™ Ultra Focus + Energy Packs",
   energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)",
-  protein: "XS™ Protein Bars (Peanut Butter & Chocolate Berry)",
+  protein: "XS™ Protein Bars (Peanut Butter & Berry)",
   cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner",
   personal: "Glister™ Multi-Action & G&H Body Care",
   skincare: "Artistry Studio™ Skincare Essentials",
@@ -69,7 +69,6 @@ export default function App() {
   const winner = Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b), 'energy');
   const matchResult = productMap[winner];
 
-  // Logic to handle Netlify form submission via AJAX
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -79,7 +78,7 @@ export default function App() {
       body: new URLSearchParams(formData).toString(),
     })
       .then(() => setSubmitted(true))
-      .catch((error) => alert(error));
+      .catch((error) => alert("Submission error: " + error));
   };
 
   return (
@@ -107,7 +106,9 @@ export default function App() {
           </div>
         ) : step < questions[path].length ? (
           <div className="animate-in slide-in-from-right-4">
-            <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest">← Back</button>
+            <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-600 transition-colors">
+              ← Back
+            </button>
             <h2 className="text-2xl font-black mb-8 leading-tight">{questions[path][step].text}</h2>
             <div className="space-y-3">
               {questions[path][step].options.map((opt, i) => (
@@ -132,18 +133,14 @@ export default function App() {
                   method="POST" 
                   data-netlify="true" 
                   onSubmit={handleSubmit}
-                  className="space-y-4"
+                  className="space-y-4 px-2"
                 >
-                  {/* Netlify Hidden Fields */}
                   <input type="hidden" name="form-name" value="discovery-leads" />
                   <input type="hidden" name="quiz-match" value={matchResult} />
                   <input type="hidden" name="category" value={path} />
 
-                  <p className="text-lg font-extrabold text-slate-800 leading-tight">
-                    Would you be interested in purchasing this box?
-                  </p>
-                  <p className="text-xs text-slate-500 font-medium mb-4 italic">
-                    Enter your email below. Ryan or Lena will reach out with a Product Guide and local delivery details.
+                  <p className="text-sm text-slate-500 font-bold leading-relaxed mb-6">
+                    Enter your email below and Ryan or Lena will reach out with your Product Guide and delivery details!
                   </p>
                   
                   <input 
@@ -160,16 +157,16 @@ export default function App() {
                     type="submit"
                     className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all"
                   >
-                    I'm Interested
+                    Send My Results
                   </button>
                 </form>
               </>
             ) : (
               <div className="py-12 animate-in fade-in">
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-4xl text-green-500">✓</span>
+                  <span className="text-4xl">✓</span>
                 </div>
-                <h2 className="text-2xl font-black mb-4">Great Choice!</h2>
+                <h2 className="text-2xl font-black mb-4 tracking-tighter">SUCCESS!</h2>
                 <p className="text-slate-600 font-bold px-4 leading-relaxed">
                   Thanks for checking this out. <br/>
                   <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly based on your results!
