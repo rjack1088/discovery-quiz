@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Data mapping based on your 14 experiences and box themes
 const paths = [
   { id: 'performance', label: 'Energy & Performance', icon: '⚡' },
   { id: 'home', label: 'Home Essentials', icon: '🏠' },
@@ -23,7 +24,7 @@ const questions = {
       { text: "Professional Results", weight: "cleaning" }
     ]},
     { text: "Which daily routine needs an upgrade?", options: [
-      { text: "Personal Care (Body/Oral)", weight: "personal" },
+      { text: "Oral & Personal Care", weight: "personal" },
       { text: "Household Cleaning", weight: "cleaning" }
     ]}
   ],
@@ -40,19 +41,21 @@ const questions = {
 };
 
 const productMap = {
-  focus: "Nutrilite™ Ultra Focus + Energy Packs",
-  energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)",
-  protein: "XS™ Protein Bars (Peanut Butter & Berry)",
-  cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner",
-  personal: "Glister™ Multi-Action & G&H Body Care",
-  skincare: "Artistry Studio™ Skincare Essentials",
-  hydration: "XS™ CocoWater Hydration Drink Mix"
+  focus: "Nutrilite™ Ultra Focus + Energy Packs", //
+  energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)", //
+  protein: "XS™ Protein Bars (Peanut Butter & Berry)", //
+  cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner", //
+  personal: "Glister™ Multi-Action & G&H Body Care", //
+  skincare: "Artistry Studio™ Skincare Essentials", //
+  hydration: "XS™ CocoWater Hydration Drink Mix" //
 };
 
 export default function App() {
   const [path, setPath] = useState(null);
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState({});
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const handleAnswer = (weight) => {
     setScores(prev => ({ ...prev, [weight]: (prev[weight] || 0) + 1 }));
@@ -65,29 +68,53 @@ export default function App() {
   };
 
   const winner = Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b), 'energy');
-
-  // Pre-filled SMS messages based on their results
-  const smsBody = `Hey Ryan! I just finished your Discovery Quiz for ${path === 'performance' ? 'Energy' : path === 'home' ? 'Home' : 'Beauty'}. My result was ${productMap[winner]}. I'd love to chat about grabbing a box!`;
+  
+  // Custom message to start the conversation
+  const smsBody = `Hey Ryan! I just finished your Discovery Quiz for ${path === 'performance' ? 'Energy' : path === 'home' ? 'Home' : 'Beauty'}. My result was ${productMap[winner]}. Let's chat about a box!`;
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-sans text-white">
-      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900">
+      {/* Local Delivery Indicator */}
+      <div className="mb-4 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[10px] font-black uppercase tracking-widest text-orange-400">
+        📍 Local Delivery: Catonsville
+      </div>
+
+      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative">
         {!path ? (
-          <div className="animate-in fade-in zoom-in duration-500">
-            <h2 className="text-3xl font-black mb-2 tracking-tighter italic">RL FIT</h2>
-            <p className="text-slate-500 mb-8 text-sm font-medium italic">Personalized Discovery Boxes</p>
-            <div className="space-y-3">
+          /* Step 0: Path Selection (Practical Instruction) */
+          <div className="animate-in fade-in zoom-in duration-500 text-center">
+            <h2 className="text-3xl font-black mb-2 tracking-tighter italic text-slate-900 leading-none">RL FIT</h2>
+            <div className="h-1.5 w-10 bg-orange-500 mx-auto mb-6 rounded-full"></div>
+            
+            <h3 className="text-xl font-extrabold text-slate-800 leading-tight px-4">
+              Which area of your life would you like to improve today?
+            </h3>
+            
+            <p className="text-[10px] text-slate-400 mt-3 mb-8 font-black uppercase tracking-[0.2em]">
+              14 Experiences • Curated for You
+            </p>
+
+            <div className="space-y-3 text-left">
               {paths.map(p => (
-                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-5 px-6 text-left rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center">
-                  <span className="text-2xl mr-4">{p.icon}</span>
-                  <span className="font-bold text-lg text-slate-700">{p.label}</span>
+                <button 
+                  key={p.id} 
+                  onClick={() => setPath(p.id)} 
+                  className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]"
+                >
+                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mr-4 group-hover:bg-orange-100 transition-colors text-2xl">
+                    {p.icon}
+                  </div>
+                  <span className="font-bold text-lg text-slate-700 group-hover:text-orange-600">{p.label}</span>
                 </button>
               ))}
             </div>
           </div>
         ) : step < questions[path].length ? (
+          /* Step 1: Questions (with Back Button) */
           <div className="animate-in slide-in-from-right-4">
-            <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest">← Back</button>
+            <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-600 transition-colors">
+              ← Back
+            </button>
             <h2 className="text-2xl font-black mb-8 leading-tight">{questions[path][step].text}</h2>
             <div className="space-y-3">
               {questions[path][step].options.map((opt, i) => (
@@ -98,26 +125,44 @@ export default function App() {
             </div>
           </div>
         ) : (
+          /* Step 2: Results & Personal Lead Capture */
           <div className="text-center animate-in zoom-in">
-            <h2 className="text-3xl font-black mb-2 tracking-tighter">YOUR ROUTINE</h2>
+            <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase">Your Match</h2>
             <div className="bg-slate-900 text-white p-6 rounded-3xl mb-8 border-b-4 border-orange-500">
-              <p className="font-black text-xl text-orange-400 uppercase tracking-wide leading-tight">{productMap[winner]}</p>
-              <p className="text-[10px] text-slate-400 mt-3 uppercase font-bold tracking-widest">1 of 14 experiences in your box</p>
+              <p className="font-black text-xl text-orange-400 uppercase leading-tight">{productMap[winner]}</p>
+              <p className="text-[10px] text-slate-400 mt-3 uppercase font-bold tracking-widest">1 of 14 experiences in your box [cite: 12]</p>
             </div>
 
-            <div className="space-y-4">
-              <p className="text-sm text-slate-500 font-bold px-4">I'd love to help you build a routine that actually works. Send me a quick text to chat about this box!</p>
-              <a 
-                href={`sms:+1[4106525825]?body=${encodeURIComponent(smsBody)}`} 
-                className="block w-full bg-orange-500 text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:bg-orange-600 transition-all active:scale-95"
-              >
-                Chat with Ryan
-              </a>
-            </div>
+            {!submitted ? (
+              <div className="space-y-4">
+                <p className="text-xs text-slate-500 font-bold mb-4 italic leading-relaxed">
+                  I'll send you a custom Routine PDF based on your results.
+                </p>
+                <input 
+                  type="email" placeholder="Email Address"
+                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium"
+                  value={email} onChange={(e) => setEmail(e.target.value)}
+                />
+                <button onClick={() => setSubmitted(true)} className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all">
+                  Get My PDF
+                </button>
+              </div>
+            ) : (
+              <div className="animate-in fade-in">
+                <p className="text-sm text-slate-500 font-bold mb-6">PDF Sent! Let's talk about getting this box to you in Catonsville.</p>
+                <a href={`sms:+1[4106525825]?body=${encodeURIComponent(smsBody)}`} className="block w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">
+                  Chat with Ryan ($35) [cite: 117]
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>
-      <p className="mt-8 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">RLFit</p>
+      
+      {/* Footer highlighting your 8 years of experience */}
+      <p className="mt-8 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">
+        Est. 2018 • Catonsville, MD
+      </p>
     </div>
   );
 }
