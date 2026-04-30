@@ -41,13 +41,13 @@ const questions = {
 };
 
 const productMap = {
-  focus: "Nutrilite™ Ultra Focus + Energy Packs", //
-  energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)", //
-  protein: "XS™ Protein Bars (Peanut Butter & Berry)", //
-  cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner", //
-  personal: "Glister™ Multi-Action & G&H Body Care", //
-  skincare: "Artistry Studio™ Skincare Essentials", //
-  hydration: "XS™ CocoWater Hydration Drink Mix" //
+  focus: "Nutrilite™ Ultra Focus + Energy Packs",
+  energy: "XS™ Energy Drinks (Cranberry-Grape & Citrus)",
+  protein: "XS™ Protein Bars (Peanut Butter & Berry)",
+  cleaning: "Amway Home™ L.O.C. Multi-Purpose Cleaner",
+  personal: "Glister™ Multi-Action & G&H Body Care",
+  skincare: "Artistry Studio™ Skincare Essentials",
+  hydration: "XS™ CocoWater Hydration Drink Mix"
 };
 
 export default function App() {
@@ -68,20 +68,18 @@ export default function App() {
   };
 
   const winner = Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b), 'energy');
-  
-  // Custom message to start the conversation
-  const smsBody = `Hey Ryan! I just finished your Discovery Quiz for ${path === 'performance' ? 'Energy' : path === 'home' ? 'Home' : 'Beauty'}. My result was ${productMap[winner]}. Let's chat about a box!`;
+  const smsBody = `Hey Ryan! I just finished your Discovery Quiz for ${path === 'performance' ? 'Energy' : path === 'home' ? 'Home' : 'Beauty'}. My result was ${productMap[winner]}. I'm interested in grabbing a box!`;
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-sans text-white">
-      {/* Local Delivery Indicator */}
+      {/* Updated Local Delivery Badge */}
       <div className="mb-4 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[10px] font-black uppercase tracking-widest text-orange-400">
-        📍 Local Delivery: Catonsville
+        📍 Free local delivery within 25 mi of Catonsville
       </div>
 
-      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative">
+      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative overflow-hidden">
         {!path ? (
-          /* Step 0: Path Selection (Practical Instruction) */
+          /* Step 0: Path Selection */
           <div className="animate-in fade-in zoom-in duration-500 text-center">
             <h2 className="text-3xl font-black mb-2 tracking-tighter italic text-slate-900 leading-none">RL FIT</h2>
             <div className="h-1.5 w-10 bg-orange-500 mx-auto mb-6 rounded-full"></div>
@@ -110,7 +108,7 @@ export default function App() {
             </div>
           </div>
         ) : step < questions[path].length ? (
-          /* Step 1: Questions (with Back Button) */
+          /* Step 1: Questions */
           <div className="animate-in slide-in-from-right-4">
             <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-600 transition-colors">
               ← Back
@@ -125,33 +123,38 @@ export default function App() {
             </div>
           </div>
         ) : (
-          /* Step 2: Results & Personal Lead Capture */
+          /* Step 2: Result & Direct CTA */
           <div className="text-center animate-in zoom-in">
             <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase">Your Match</h2>
             <div className="bg-slate-900 text-white p-6 rounded-3xl mb-8 border-b-4 border-orange-500">
               <p className="font-black text-xl text-orange-400 uppercase leading-tight">{productMap[winner]}</p>
-              <p className="text-[10px] text-slate-400 mt-3 uppercase font-bold tracking-widest">1 of 14 experiences in your box [cite: 12]</p>
+              <p className="text-[10px] text-slate-400 mt-3 uppercase font-bold tracking-widest">1 of 14 experiences in your box</p>
             </div>
 
             {!submitted ? (
               <div className="space-y-4">
-                <p className="text-xs text-slate-500 font-bold mb-4 italic leading-relaxed">
-                  I'll send you a custom Routine PDF based on your results.
+                <p className="text-lg font-extrabold text-slate-800 px-2 leading-tight">
+                  Would you be interested in purchasing this box?
+                </p>
+                <p className="text-xs text-slate-500 font-medium mb-4 italic leading-relaxed">
+                  Enter your email and I'll send you a full guide on the 14 products included.
                 </p>
                 <input 
                   type="email" placeholder="Email Address"
-                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium"
+                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
                   value={email} onChange={(e) => setEmail(e.target.value)}
                 />
                 <button onClick={() => setSubmitted(true)} className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all">
-                  Get My PDF
+                  Get Product Guide
                 </button>
               </div>
             ) : (
               <div className="animate-in fade-in">
-                <p className="text-sm text-slate-500 font-bold mb-6">PDF Sent! Let's talk about getting this box to you in Catonsville.</p>
+                <p className="text-sm text-slate-500 font-bold mb-6 px-4">
+                  Guide sent! Text me below to coordinate your $35 local box delivery.
+                </p>
                 <a href={`sms:+1[4106525825]?body=${encodeURIComponent(smsBody)}`} className="block w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">
-                  Chat with Ryan ($35) [cite: 117]
+                  Text Ryan to Order ($35)
                 </a>
               </div>
             )}
@@ -159,7 +162,6 @@ export default function App() {
         )}
       </div>
       
-      {/* Footer highlighting your 8 years of experience */}
       <p className="mt-8 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">
         Est. 2018 • Catonsville, MD
       </p>
