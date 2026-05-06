@@ -1,64 +1,92 @@
 import React, { useState } from 'react';
 
+// Main paths based on the new box categories
 const paths = [
-  { id: 'performance', label: 'Energy & Performance', icon: '⚡' },
-  { id: 'home', label: 'Home Essentials', icon: '🏠' },
-  { id: 'beauty', label: 'Skincare & Glow', icon: '✨' }
+  { id: 'fitness', label: 'Performance & Fitness', icon: '⚡' },
+  { id: 'health', label: 'Optimal Health & Immunity', icon: '🌿' },
+  { id: 'routine', label: 'The Daily Routine Sampler', icon: '🏠' },
+  { id: 'moms', label: 'Specifically for Moms', icon: '💖' }
 ];
 
+// Branching questions for the dynamic paths
 const questions = {
-  performance: [
-    { text: "What's your biggest hurdle today?", options: [
-      { text: "Mental Fog / Focus", weight: "focus" },
-      { text: "Physical Fatigue", weight: "energy" }
-    ]},
-    { text: "How do you prefer to refuel?", options: [
-      { text: "Refreshing Drink", weight: "energy" },
-      { text: "Quick Protein Snack", weight: "protein" }
-    ]}
+  routine: [
+    {
+      text: "Are you primarily looking to test...",
+      options: [
+        { text: "A boost in energy, protein, and hydration", weight: 'discovery' },
+        { text: "A complete sampler of home, personal care, and health products", weight: 'sample' }
+      ]
+    }
   ],
-  home: [
-    { text: "What's your top priority for your home?", options: [
-      { text: "Family-Safe Ingredients", weight: "cleaning" },
-      { text: "Professional Results", weight: "cleaning" }
-    ]},
-    { text: "Which daily routine needs an upgrade?", options: [
-      { text: "Oral & Personal Care", weight: "personal" },
-      { text: "Household Cleaning", weight: "cleaning" }
-    ]}
-  ],
-  beauty: [
-    { text: "What is your skin's primary need?", options: [
-      { text: "Instant Glow / Brightness", weight: "skincare" },
-      { text: "Deep Hydration", weight: "hydration" }
-    ]},
-    { text: "How much time do you have for a routine?", options: [
-      { text: "5 Minutes - Quick Glow", weight: "skincare" },
-      { text: "15 Minutes - The Full Works", weight: "skincare" }
-    ]}
+  moms: [
+    {
+      text: "What’s your biggest focus right now?",
+      options: [
+        { text: "A quick pick-me-up and self-care reset", weight: 'fuel' },
+        { text: "Comprehensive health, beauty, and oral care support", weight: 'super' }
+      ]
+    }
   ]
 };
 
-const productMap = {
-  focus: "Nutrilite™ Ultra Focus + Energy Packs",
-  energy: "XS™ Energy Drinks (16 different flavors!)",
-  protein: "XS™ Protein Bars (Peanut Butter & Chocolate Berry)",
-  cleaning: "Amway Home™ L.O.C.™ Multi-Purpose Wipes",
-  personal: "Glister™ Multi-Action Toothpaste & G&H Body Care",
-  skincare: "Artistry Studio™ Skincare Essentials",
-  hydration: "XS™ CocoWater Hydration Drink Mix"
+// Full box details based on your attached materials
+// The 'Core Discovery Box' details come from your 'Discovery Box Insert No Scan Me.jpg' insert.
+// The 'Health Sample Box' details come from 'Health Sample Box Contents.jpg'.
+// The 'Jump Start' boxes are from 'Jump Start Fitness Contents.jpg' and 'Jump Start Health Contents.jpg'.
+// The 'Mom' bundles are from 'Mom Fuel Bundle.jpg' and 'Supermom Bundle.jpg'.
+const boxDetails = {
+  fitness: {
+    name: "Jump Start Fitness Box",
+    image: "public/images/fitness.jpg", // Replace with your image path
+    description: "Built for the performance-driven. Clean fuel for your workouts and recovery.",
+    features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink (Cranberry-Grape)"]
+  },
+  health: {
+    name: "Jump Start Health Box",
+    image: "public/images/jshealth.jpg", // Replace with your image path
+    description: "A solid foundation for optimal wellness, focusing on vitamins, nutrients, and antioxidant support.",
+    features: ["Nutrilite™ Perfect Pack", "Nutrilite™ Concentrated Fruits & Veggies", "Nutrilite™ Twist Tubes (Immunity)"]
+  },
+  discovery: {
+    name: "The Core Discovery Box",
+    image: "public/images/core.png", // Placeholder or use Discovery Insert image
+    description: "The essential 14 experiences across energy, immunity, protein, and electrolytes.",
+    features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Berry)", "XS™ CocoWater Hydration Drink Mix"]
+  },
+  sample: {
+    name: "The Complete Health & Home Sample Box",
+    image: "public/images/health.png", // Use the health sample box contents image
+    description: "A perfect sampler to upgrade your daily routine from skincare to a sparkling clean home.",
+    features: ["Nutrilite™ Supplements", "XS™ Energy", "Artistry™ Skincare", "Glister™ Oral Care", "g&h™ Body Care", "Amway Home™ Multi-Purpose Cleaner"]
+  },
+  fuel: {
+    name: "The Mom Fuel Bundle",
+    image: "public/images/mom-fuel.png", // Use the Mom Fuel Bundle image
+    description: "Quick, effective support for on-the-go energy and a simple self-care reset.",
+    features: ["XS™ Energy Drink", "Nutrilite™ supplements", "Artistry™ essential skincare", "g&h™ body care"]
+  },
+  super: {
+    name: "The Supermom Bundle",
+    image: "public/images/supermom.png", // Use the Supermom Bundle image
+    description: "Comprehensive coverage for health, beauty, oral, and body care. Your upgraded standard.",
+    features: ["Extensive Nutrilite™ health packs", "Artistry™ skincare routine", "g&h™ body care", "Glister™ multi-action oral care", "Nutrilite™ Twist Tubes"]
+  }
 };
 
 export default function App() {
   const [path, setPath] = useState(null);
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState({});
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [name, setName] = useState('');
+  const [contact, setContact] = useState(''); // Email or Text
 
   const handleAnswer = (weight) => {
-    setScores(prev => ({ ...prev, [weight]: (prev[weight] || 0) + 1 }));
+    // For direct paths, we already have the answer. For routine/moms, we score.
+    if (path === 'routine' || path === 'moms') {
+      setScores(prev => ({ ...prev, [weight]: (prev[weight] || 0) + 1 }));
+    }
     setStep(prev => prev + 1);
   };
 
@@ -67,12 +95,27 @@ export default function App() {
     else setStep(prev => prev - 1);
   };
 
-  const winner = Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b), 'energy');
-  const matchResult = productMap[winner];
+  // Determine the winning box
+  let winningBoxKey;
+  if (path === 'fitness') winningBoxKey = 'fitness';
+  else if (path === 'health') winningBoxKey = 'health';
+  else if (path === 'routine') {
+    winningBoxKey = scores['discovery'] ? 'discovery' : 'sample';
+  } else if (path === 'moms') {
+    winningBoxKey = scores['fuel'] ? 'fuel' : 'super';
+  }
 
-  const handleSubmit = (e) => {
+  const winningBox = boxDetails[winningBoxKey] || boxDetails['discovery']; // Fallback
+
+  const handleFinalSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("contact", contact);
+    formData.append("recommendedBox", winningBox.name);
+    
+    // Netlify Forms configuration
+    // Make sure to replace 'your-unique-site-id' in your actual configuration
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -84,108 +127,124 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-sans text-white">
+      {/* 25-Mile Radius local delivery badge for Catonsville community */}
       <div className="mb-4 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[10px] font-black uppercase tracking-widest text-orange-400">
         📍 Free local delivery within 25 mi of Catonsville
       </div>
 
       <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative">
         {!path ? (
+          /* Step 0: Path Selection */
           <div className="animate-in fade-in zoom-in text-center">
             <h2 className="text-3xl font-black mb-2 italic">RL FIT</h2>
             <div className="h-1.5 w-10 bg-orange-500 mx-auto mb-6 rounded-full"></div>
+            
             <h3 className="text-xl font-extrabold text-slate-800 leading-tight mb-8">
-              Which area of your life would you like to improve today?
+              Choose a priority to find your perfect box:
             </h3>
+            
             <div className="space-y-3 text-left">
               {paths.map(p => (
-                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
-                  <div className="text-2xl mr-4">{p.icon}</div>
-                  <span className="font-bold text-lg text-slate-700">{p.label}</span>
+                <button 
+                  key={p.id} 
+                  onClick={() => setPath(p.id)} 
+                  className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]"
+                >
+                  <div className="text-2xl mr-4 group-hover:scale-110 transition-transform">{p.icon}</div>
+                  <span className="font-bold text-lg text-slate-700 group-hover:text-orange-600">{p.label}</span>
                 </button>
               ))}
             </div>
           </div>
-        ) : step < questions[path].length ? (
+        ) : questions[path] && step < questions[path].length ? (
+          /* Step 1: Branching Questions */
           <div className="animate-in slide-in-from-right-4">
-            <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-600 transition-colors">
-              ← Back
-            </button>
+            <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest">← Back</button>
             <h2 className="text-2xl font-black mb-8 leading-tight">{questions[path][step].text}</h2>
             <div className="space-y-3">
               {questions[path][step].options.map((opt, i) => (
-                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700">
+                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-5 px-6 text-left rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700">
                   {opt.text}
                 </button>
               ))}
             </div>
           </div>
         ) : (
+          /* Step 2: Final Box Recommendation and Features */
           <div className="text-center animate-in zoom-in">
-            {!submitted ? (
-              <>
-                <h2 className="text-3xl font-black mb-2 uppercase">Your Match</h2>
-                <div className="bg-slate-900 text-white p-6 rounded-3xl mb-8 border-b-4 border-orange-500">
-                  <p className="font-black text-xl text-orange-400 uppercase leading-tight">{matchResult}</p>
-                  <p className="text-[10px] text-slate-400 mt-3 uppercase font-bold tracking-widest">1 of 14 experiences in your box</p>
+            <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase leading-none">Your Match</h2>
+            
+            <div className="bg-slate-900 text-white p-6 rounded-3xl mb-8 border-b-4 border-orange-500">
+              <p className="font-black text-xl text-orange-400 uppercase leading-tight">{winningBox.name}</p>
+              <p className="text-[10px] text-slate-400 mt-2 uppercase font-bold tracking-widest px-2">{winningBox.description}</p>
+            </div>
+
+            {/* Feature Highlights from user's provided materials */}
+            <h4 className="text-sm font-black uppercase tracking-wider text-slate-400 mb-3 text-left">Highlights:</h4>
+            <div className="text-left space-y-2 mb-10">
+              {winningBox.features.map((feature, idx) => (
+                <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center">
+                  <div className="h-6 w-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-3 font-bold text-xs">✓</div>
+                  <span className="font-bold text-slate-800 text-sm">{feature}</span>
                 </div>
+              ))}
+            </div>
 
-                <form 
-                  name="discovery-leads" 
-                  method="POST" 
-                  data-netlify="true" 
-                  onSubmit={handleSubmit}
-                  className="space-y-4 px-2"
+            {!submitted ? (
+              /* Concierge Lead Capture */
+              <form name="discovery-leads" onSubmit={handleFinalSubmit} className="space-y-4 px-2">
+                <input type="hidden" name="form-name" value="discovery-leads" />
+                <input type="hidden" name="recommendedBox" value={winningBox.name} />
+                
+                <p className="text-xs text-slate-500 font-bold leading-relaxed mb-6">
+                  Ready to order? Enter your name and contact below. Ryan or Lena will reach out shortly to coordinate your delivery!
+                </p>
+                
+                <input 
+                  type="text" 
+                  name="name"
+                  required
+                  placeholder="Your Name"
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
+                />
+
+                <input 
+                  type="text" 
+                  name="contact"
+                  required
+                  placeholder="Email or Text Number"
+                  value={contact} 
+                  onChange={(e) => setContact(e.target.value)}
+                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
+                />
+                
+                <button 
+                  type="submit"
+                  className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all active:scale-95"
                 >
-                  <input type="hidden" name="form-name" value="discovery-leads" />
-                  <input type="hidden" name="quiz-match" value={matchResult} />
-                  <input type="hidden" name="category" value={path} />
-
-                  <p className="text-sm text-slate-500 font-bold leading-relaxed mb-6">
-                    Enter your name below to submit your results, and Ryan or Lena will be in touch with you shortly!
-                  </p>
-                  
-                  <input 
-                    type="text" 
-                    name="name"
-                    required
-                    placeholder="Your Name"
-                    className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
-                    value={name} 
-                    onChange={(e) => setName(e.target.value)}
-                  />
-
-                  <input 
-                    type="email" 
-                    name="email"
-                    placeholder="Email (Optional)"
-                    className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  
-                  <button 
-                    type="submit"
-                    className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all"
-                  >
-                    Send My Results
-                  </button>
-                </form>
-              </>
+                  I’m Interested!
+                </button>
+              </form>
             ) : (
+              /* Success Message emphasizing the personal follow-up */
               <div className="py-12 animate-in fade-in">
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-4xl">✓</span>
                 </div>
-                <h2 className="text-2xl font-black mb-4 tracking-tighter">SUCCESS!</h2>
+                <h2 className="text-2xl font-black mb-4 tracking-tighter uppercase success-text">SUCCESS!</h2>
                 <p className="text-slate-600 font-bold px-4 leading-relaxed">
                   Thanks, <span className="text-slate-900">{name}</span>! <br/>
-                  <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly based on your results!
+                  <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly to finalize your order.
                 </p>
               </div>
             )}
           </div>
         )}
       </div>
+      
+      {/* Catonsville established date footer */}
       <p className="mt-8 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
     </div>
   );
