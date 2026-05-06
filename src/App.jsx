@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// Main paths based on the new box categories
+// Main paths based on your categories
 const paths = [
   { id: 'fitness', label: 'Performance & Fitness', icon: '⚡' },
   { id: 'health', label: 'Optimal Health & Immunity', icon: '🌿' },
@@ -8,7 +8,7 @@ const paths = [
   { id: 'moms', label: 'Specifically for Moms', icon: '💖' }
 ];
 
-// Branching questions for the dynamic paths
+// Branching questions
 const questions = {
   routine: [
     {
@@ -30,45 +30,41 @@ const questions = {
   ]
 };
 
-// Full box details based on your attached materials
-// The 'Core Discovery Box' details come from your 'Discovery Box Insert No Scan Me.jpg' insert.
-// The 'Health Sample Box' details come from 'Health Sample Box Contents.jpg'.
-// The 'Jump Start' boxes are from 'Jump Start Fitness Contents.jpg' and 'Jump Start Health Contents.jpg'.
-// The 'Mom' bundles are from 'Mom Fuel Bundle.jpg' and 'Supermom Bundle.jpg'.
+// Box details with your specific filenames and corrected paths
 const boxDetails = {
   fitness: {
     name: "Jump Start Fitness Box",
-    image: "public/images/fitness.jpg", // Replace with your image path
+    image: "/images/fitness.jpg",
     description: "Built for the performance-driven. Clean fuel for your workouts and recovery.",
     features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink (Cranberry-Grape)"]
   },
   health: {
     name: "Jump Start Health Box",
-    image: "public/images/jshealth.jpg", // Replace with your image path
+    image: "/images/jshealth.jpg",
     description: "A solid foundation for optimal wellness, focusing on vitamins, nutrients, and antioxidant support.",
     features: ["Nutrilite™ Perfect Pack", "Nutrilite™ Concentrated Fruits & Veggies", "Nutrilite™ Twist Tubes (Immunity)"]
   },
   discovery: {
     name: "The Core Discovery Box",
-    image: "public/images/core.png", // Placeholder or use Discovery Insert image
+    image: "/images/core.png",
     description: "The essential 14 experiences across energy, immunity, protein, and electrolytes.",
     features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Berry)", "XS™ CocoWater Hydration Drink Mix"]
   },
   sample: {
     name: "The Complete Health & Home Sample Box",
-    image: "public/images/health.png", // Use the health sample box contents image
+    image: "/images/health.png",
     description: "A perfect sampler to upgrade your daily routine from skincare to a sparkling clean home.",
     features: ["Nutrilite™ Supplements", "XS™ Energy", "Artistry™ Skincare", "Glister™ Oral Care", "g&h™ Body Care", "Amway Home™ Multi-Purpose Cleaner"]
   },
   fuel: {
     name: "The Mom Fuel Bundle",
-    image: "public/images/mom-fuel.png", // Use the Mom Fuel Bundle image
+    image: "/images/mom-fuel.png",
     description: "Quick, effective support for on-the-go energy and a simple self-care reset.",
     features: ["XS™ Energy Drink", "Nutrilite™ supplements", "Artistry™ essential skincare", "g&h™ body care"]
   },
   super: {
     name: "The Supermom Bundle",
-    image: "public/images/supermom.png", // Use the Supermom Bundle image
+    image: "/images/supermom.png",
     description: "Comprehensive coverage for health, beauty, oral, and body care. Your upgraded standard.",
     features: ["Extensive Nutrilite™ health packs", "Artistry™ skincare routine", "g&h™ body care", "Glister™ multi-action oral care", "Nutrilite™ Twist Tubes"]
   }
@@ -80,10 +76,9 @@ export default function App() {
   const [scores, setScores] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState('');
-  const [contact, setContact] = useState(''); // Email or Text
+  const [contact, setContact] = useState('');
 
   const handleAnswer = (weight) => {
-    // For direct paths, we already have the answer. For routine/moms, we score.
     if (path === 'routine' || path === 'moms') {
       setScores(prev => ({ ...prev, [weight]: (prev[weight] || 0) + 1 }));
     }
@@ -95,27 +90,19 @@ export default function App() {
     else setStep(prev => prev - 1);
   };
 
-  // Determine the winning box
   let winningBoxKey;
   if (path === 'fitness') winningBoxKey = 'fitness';
   else if (path === 'health') winningBoxKey = 'health';
-  else if (path === 'routine') {
-    winningBoxKey = scores['discovery'] ? 'discovery' : 'sample';
-  } else if (path === 'moms') {
-    winningBoxKey = scores['fuel'] ? 'fuel' : 'super';
-  }
+  else if (path === 'routine') winningBoxKey = scores['discovery'] ? 'discovery' : 'sample';
+  else if (path === 'moms') winningBoxKey = scores['fuel'] ? 'fuel' : 'super';
 
-  const winningBox = boxDetails[winningBoxKey] || boxDetails['discovery']; // Fallback
+  const winningBox = boxDetails[winningBoxKey] || boxDetails['discovery'];
 
   const handleFinalSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("contact", contact);
+    const formData = new FormData(e.target);
     formData.append("recommendedBox", winningBox.name);
     
-    // Netlify Forms configuration
-    // Make sure to replace 'your-unique-site-id' in your actual configuration
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -127,29 +114,22 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-sans text-white">
-      {/* 25-Mile Radius local delivery badge for Catonsville community */}
       <div className="mb-4 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[10px] font-black uppercase tracking-widest text-orange-400">
         📍 Free local delivery within 25 mi of Catonsville
       </div>
 
       <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative">
         {!path ? (
-          /* Step 0: Path Selection */
+          /* Step 0: Initial Selection */
           <div className="animate-in fade-in zoom-in text-center">
             <h2 className="text-3xl font-black mb-2 italic">RL FIT</h2>
             <div className="h-1.5 w-10 bg-orange-500 mx-auto mb-6 rounded-full"></div>
-            
-            <h3 className="text-xl font-extrabold text-slate-800 leading-tight mb-8">
+            <h3 className="text-xl font-extrabold text-slate-800 leading-tight mb-8 px-2">
               Choose a priority to find your perfect box:
             </h3>
-            
             <div className="space-y-3 text-left">
               {paths.map(p => (
-                <button 
-                  key={p.id} 
-                  onClick={() => setPath(p.id)} 
-                  className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]"
-                >
+                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
                   <div className="text-2xl mr-4 group-hover:scale-110 transition-transform">{p.icon}</div>
                   <span className="font-bold text-lg text-slate-700 group-hover:text-orange-600">{p.label}</span>
                 </button>
@@ -163,77 +143,74 @@ export default function App() {
             <h2 className="text-2xl font-black mb-8 leading-tight">{questions[path][step].text}</h2>
             <div className="space-y-3">
               {questions[path][step].options.map((opt, i) => (
-                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-5 px-6 text-left rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700">
+                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700">
                   {opt.text}
                 </button>
               ))}
             </div>
           </div>
         ) : (
-          /* Step 2: Final Box Recommendation and Features */
+          /* Step 2: Results Display with Image Rendering */
           <div className="text-center animate-in zoom-in">
             <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase leading-none">Your Match</h2>
             
-            <div className="bg-slate-900 text-white p-6 rounded-3xl mb-8 border-b-4 border-orange-500">
-              <p className="font-black text-xl text-orange-400 uppercase leading-tight">{winningBox.name}</p>
-              <p className="text-[10px] text-slate-400 mt-2 uppercase font-bold tracking-widest px-2">{winningBox.description}</p>
+            <div className="bg-slate-900 text-white overflow-hidden rounded-3xl mb-8 border-b-4 border-orange-500 shadow-xl">
+              {/* Box Image Display */}
+              <img 
+                src={winningBox.image} 
+                alt={winningBox.name} 
+                className="w-full h-48 object-cover border-b border-white/10" 
+              />
+              
+              <div className="p-6">
+                <p className="font-black text-xl text-orange-400 uppercase leading-tight">{winningBox.name}</p>
+                <p className="text-[10px] text-slate-400 mt-2 uppercase font-bold tracking-widest px-2">
+                  {winningBox.description}
+                </p>
+              </div>
             </div>
 
-            {/* Feature Highlights from user's provided materials */}
-            <h4 className="text-sm font-black uppercase tracking-wider text-slate-400 mb-3 text-left">Highlights:</h4>
+            <h4 className="text-sm font-black uppercase tracking-wider text-slate-400 mb-3 text-left px-2">Inside the Box:</h4>
             <div className="text-left space-y-2 mb-10">
               {winningBox.features.map((feature, idx) => (
                 <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center">
-                  <div className="h-6 w-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-3 font-bold text-xs">✓</div>
+                  <div className="h-5 w-5 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-3 font-bold text-[10px]">✓</div>
                   <span className="font-bold text-slate-800 text-sm">{feature}</span>
                 </div>
               ))}
             </div>
 
             {!submitted ? (
-              /* Concierge Lead Capture */
-              <form name="discovery-leads" onSubmit={handleFinalSubmit} className="space-y-4 px-2">
+              <form name="discovery-leads" method="POST" data-netlify="true" onSubmit={handleFinalSubmit} className="space-y-4 px-2">
                 <input type="hidden" name="form-name" value="discovery-leads" />
                 <input type="hidden" name="recommendedBox" value={winningBox.name} />
                 
                 <p className="text-xs text-slate-500 font-bold leading-relaxed mb-6">
-                  Ready to order? Enter your name and contact below. Ryan or Lena will reach out shortly to coordinate your delivery!
+                  Ready to order? Enter your info below and Ryan or Lena will reach out to coordinate your local delivery!
                 </p>
                 
                 <input 
-                  type="text" 
-                  name="name"
-                  required
-                  placeholder="Your Name"
-                  value={name} 
-                  onChange={(e) => setName(e.target.value)}
+                  type="text" name="name" required placeholder="Your Name"
+                  value={name} onChange={(e) => setName(e.target.value)}
                   className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
                 />
 
                 <input 
-                  type="text" 
-                  name="contact"
-                  required
-                  placeholder="Email or Text Number"
-                  value={contact} 
-                  onChange={(e) => setContact(e.target.value)}
+                  type="text" name="contact" required placeholder="Email or Phone Number"
+                  value={contact} onChange={(e) => setContact(e.target.value)}
                   className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
                 />
                 
-                <button 
-                  type="submit"
-                  className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all active:scale-95"
-                >
+                <button type="submit" className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all active:scale-95">
                   I’m Interested!
                 </button>
               </form>
             ) : (
-              /* Success Message emphasizing the personal follow-up */
-              <div className="py-12 animate-in fade-in">
+              <div className="py-12 animate-in fade-in text-center">
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-4xl">✓</span>
                 </div>
-                <h2 className="text-2xl font-black mb-4 tracking-tighter uppercase success-text">SUCCESS!</h2>
+                <h2 className="text-2xl font-black mb-4 tracking-tighter">SUCCESS!</h2>
                 <p className="text-slate-600 font-bold px-4 leading-relaxed">
                   Thanks, <span className="text-slate-900">{name}</span>! <br/>
                   <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly to finalize your order.
@@ -243,8 +220,6 @@ export default function App() {
           </div>
         )}
       </div>
-      
-      {/* Catonsville established date footer */}
       <p className="mt-8 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
     </div>
   );
