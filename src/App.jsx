@@ -58,13 +58,13 @@ const boxDetails = {
   },
   fuel: {
     name: "The Mom Fuel Bundle",
-    image: "/images/mom-fuel.png",
+    image: "/images/supermom.png",
     description: "Quick, effective support for on-the-go energy and a simple self-care reset.",
     features: ["XS™ Energy Drink", "Nutrilite™ supplements", "Artistry™ essential skincare", "g&h™ body care"]
   },
   super: {
     name: "The Supermom Bundle",
-    image: "/images/supermom.png",
+    image: "/images//mom-fuel.png",
     description: "Comprehensive coverage for health, beauty, oral, and body care. Your upgraded standard.",
     features: ["Extensive Nutrilite™ health packs", "Artistry™ skincare routine", "g&h™ body care", "Glister™ multi-action oral care", "Nutrilite™ Twist Tubes"]
   }
