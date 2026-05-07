@@ -30,17 +30,17 @@ const questions = {
   ]
 };
 
-// Box details with your specific filenames and corrected paths
+// Box details with updated .jpeg extensions and object-fit logic
 const boxDetails = {
   fitness: {
     name: "Jump Start Fitness Box",
-    image: "/images/fitness.jpg",
+    image: "/images/fitness.jpeg",
     description: "Built for the performance-driven. Clean fuel for your workouts and recovery.",
     features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink (Cranberry-Grape)"]
   },
   health: {
     name: "Jump Start Health Box",
-    image: "/images/jshealth.jpg",
+    image: "/images/jshealth.jpeg",
     description: "A solid foundation for optimal wellness, focusing on vitamins, nutrients, and antioxidant support.",
     features: ["Nutrilite™ Perfect Pack", "Nutrilite™ Concentrated Fruits & Veggies", "Nutrilite™ Twist Tubes (Immunity)"]
   },
@@ -120,7 +120,6 @@ export default function App() {
 
       <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative">
         {!path ? (
-          /* Step 0: Initial Selection */
           <div className="animate-in fade-in zoom-in text-center">
             <h2 className="text-3xl font-black mb-2 italic">RL FIT</h2>
             <div className="h-1.5 w-10 bg-orange-500 mx-auto mb-6 rounded-full"></div>
@@ -137,7 +136,6 @@ export default function App() {
             </div>
           </div>
         ) : questions[path] && step < questions[path].length ? (
-          /* Step 1: Branching Questions */
           <div className="animate-in slide-in-from-right-4">
             <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest">← Back</button>
             <h2 className="text-2xl font-black mb-8 leading-tight">{questions[path][step].text}</h2>
@@ -150,17 +148,18 @@ export default function App() {
             </div>
           </div>
         ) : (
-          /* Step 2: Results Display with Image Rendering */
           <div className="text-center animate-in zoom-in">
             <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase leading-none">Your Match</h2>
             
             <div className="bg-slate-900 text-white overflow-hidden rounded-3xl mb-8 border-b-4 border-orange-500 shadow-xl">
-              {/* Box Image Display */}
-              <img 
-                src={winningBox.image} 
-                alt={winningBox.name} 
-                className="w-full h-48 object-cover border-b border-white/10" 
-              />
+              {/* Updated Image Logic: White background and object-contain to show full flyers */}
+              <div className="bg-white p-2">
+                <img 
+                  src={winningBox.image} 
+                  alt={winningBox.name} 
+                  className="w-full max-h-[450px] object-contain mx-auto" 
+                />
+              </div>
               
               <div className="p-6">
                 <p className="font-black text-xl text-orange-400 uppercase leading-tight">{winningBox.name}</p>
