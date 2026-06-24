@@ -36,7 +36,7 @@ const boxDetails = {
     name: "Jump Start Fitness Box",
     image: "/images/fitness.jpeg",
     description: "Built for the performance-driven. Clean fuel for your workouts and recovery.",
-    features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink (Cranberry-Grape)"]
+    features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink"]
   },
   health: {
     name: "Jump Start Health Box",
