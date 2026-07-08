@@ -113,28 +113,33 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-sans text-white overflow-y-auto">
-      {/* Reduced bottom margin on the delivery banner */}
-      <div className="mb-2 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[10px] font-black uppercase tracking-widest text-orange-400">
+    /* Changed min-h-screen to h-screen and removed scrolling overflow so it locks to the viewport */
+    <div className="h-screen w-full bg-slate-900 flex flex-col items-center justify-center p-3 font-sans text-white overflow-hidden">
+      
+      {/* Ultra-compact top banner */}
+      <div className="mb-2 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[9px] font-black uppercase tracking-widest text-orange-400">
         📍 Free local delivery within 25 mi of Catonsville
       </div>
 
-      {/* Tighter padding (p-5) and absolute vertical centering (my-auto) */}
-      <div className="max-w-sm w-full bg-white rounded-[2.5rem] shadow-2xl p-5 text-slate-900 relative my-auto">
+      {/* Aggressively trimmed card padding: p-4 instead of p-5/p-8, max-w-sm */}
+      <div className="max-w-sm w-full bg-white rounded-[2rem] shadow-2xl p-4 text-slate-900 relative my-auto">
         {!path ? (
           /* Step 0: Initial Selection */
           <div className="animate-in fade-in zoom-in text-center">
-            <h2 className="text-2xl font-black mb-1 italic">RL FIT</h2>
-            <div className="h-1 w-10 bg-orange-500 mx-auto mb-4 rounded-full"></div>
-            <h3 className="text-base font-extrabold text-slate-800 leading-tight mb-4 px-2">
+            <h2 className="text-xl font-black mb-0.5 italic">RL FIT</h2>
+            <div className="h-1 w-8 bg-orange-500 mx-auto mb-3 rounded-full"></div>
+            
+            <h3 className="text-sm font-extrabold text-slate-800 leading-tight mb-3 px-2">
               Choose a priority to find your perfect box:
             </h3>
-            <div className="space-y-2 text-left">
+            
+            {/* Reduced spacing between buttons from space-y-2 to space-y-1.5 */}
+            <div className="space-y-1.5 text-left">
               {paths.map(p => (
-                /* Tightened button vertical padding (py-3) */
-                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-3 px-4 rounded-xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
-                  <div className="text-lg mr-3 group-hover:scale-110 transition-transform">{p.icon}</div>
-                  <span className="font-bold text-sm text-slate-700 group-hover:text-orange-600">{p.label}</span>
+                /* Slimmed button padding: py-2.5 px-3 instead of py-3/py-4 */
+                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-2.5 px-3.5 rounded-xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
+                  <div className="text-base mr-3 group-hover:scale-110 transition-transform">{p.icon}</div>
+                  <span className="font-bold text-xs text-slate-700 group-hover:text-orange-600">{p.label}</span>
                 </button>
               ))}
             </div>
@@ -142,11 +147,11 @@ export default function App() {
         ) : questions[path] && step < questions[path].length ? (
           /* Step 1: Branching Questions */
           <div className="animate-in slide-in-from-right-4">
-            <button onClick={handleBack} className="mb-4 text-slate-400 text-[10px] font-black uppercase tracking-widest">← Back</button>
-            <h2 className="text-lg font-black mb-5 leading-tight">{questions[path][step].text}</h2>
+            <button onClick={handleBack} className="mb-3 text-slate-400 text-[9px] font-black uppercase tracking-widest">← Back</button>
+            <h2 className="text-base font-black mb-4 leading-tight">{questions[path][step].text}</h2>
             <div className="space-y-2">
               {questions[path][step].options.map((opt, i) => (
-                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-3 px-4 rounded-xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700 text-left text-sm">
+                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-2.5 px-3.5 rounded-xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700 text-left text-xs">
                   {opt.text}
                 </button>
               ))}
@@ -154,71 +159,71 @@ export default function App() {
           </div>
         ) : (
           /* Step 2: Results Display with Image Rendering */
-          <div className="text-center animate-in zoom-in">
-            <h2 className="text-2xl font-black mb-1 tracking-tighter uppercase leading-none">Your Match</h2>
+          <div className="text-center animate-in zoom-in max-h-[80vh] overflow-y-auto px-1">
+            <h2 className="text-xl font-black mb-1 tracking-tighter uppercase leading-none">Your Match</h2>
             
-            <div className="bg-slate-900 text-white overflow-hidden rounded-3xl mb-4 border-b-4 border-orange-500 shadow-xl">
-              <div className="bg-white p-2">
-                {/* Max height adjusted down to 350px to fit short screen layouts */}
+            <div className="bg-slate-900 text-white overflow-hidden rounded-2xl mb-3 border-b-4 border-orange-500 shadow-xl">
+              <div className="bg-white p-1">
+                {/* Max height trimmed down to 220px to prevent viewport overflow on short laptops */}
                 <img 
                   src={winningBox.image} 
                   alt={winningBox.name} 
-                  className="w-full max-h-[350px] object-contain mx-auto" 
+                  className="w-full max-h-[220px] object-contain mx-auto" 
                 />
               </div>
               
-              <div className="p-4">
-                <p className="font-black text-base text-orange-400 uppercase leading-tight">{winningBox.name}</p>
-                <p className="text-[9px] text-slate-400 mt-1 uppercase font-bold tracking-widest px-2">
+              <div className="p-3">
+                <p className="font-black text-sm text-orange-400 uppercase leading-tight">{winningBox.name}</p>
+                <p className="text-[8px] text-slate-400 mt-1 uppercase font-bold tracking-widest px-1">
                   {winningBox.description}
                 </p>
               </div>
             </div>
 
-            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 text-left px-2">Inside the Box:</h4>
-            <div className="text-left space-y-1.5 mb-6">
+            <h4 className="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1.5 text-left px-1">Inside the Box:</h4>
+            <div className="text-left space-y-1 mb-4">
               {winningBox.features.map((feature, idx) => (
-                <div key={idx} className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center">
-                  <div className="h-4 w-4 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-2.5 font-bold text-[9px]">✓</div>
-                  <span className="font-bold text-slate-800 text-xs">{feature}</span>
+                <div key={idx} className="bg-slate-50 p-2 rounded-lg border border-slate-100 flex items-center">
+                  <div className="h-3.5 w-3.5 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-2 font-bold text-[8px]">✓</div>
+                  <span className="font-bold text-slate-800 text-[11px]">{feature}</span>
                 </div>
               ))}
             </div>
 
             {!submitted ? (
               /* Lead Capture Form */
-              <form name="discovery-leads" method="POST" data-netlify="true" onSubmit={handleFinalSubmit} className="space-y-2.5 px-1">
+              <form name="discovery-leads" method="POST" data-netlify="true" onSubmit={handleFinalSubmit} className="space-y-2 px-1">
                 <input type="hidden" name="form-name" value="discovery-leads" />
                 <input type="hidden" name="recommendedBox" value={winningBox.name} />
                 
-                <p className="text-[10px] text-slate-500 font-bold leading-relaxed mb-3">
+                <p className="text-[9px] text-slate-500 font-bold leading-relaxed mb-2">
                   Ready to order? Enter your info below and Ryan or Lena will reach out to coordinate your local delivery!
                 </p>
                 
                 <input 
                   type="text" name="name" required placeholder="Your Name"
                   value={name} onChange={(e) => setName(e.target.value)}
-                  className="w-full p-3 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center text-xs"
+                  className="w-full p-2.5 rounded-lg border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center text-xs"
                 />
 
                 <input 
                   type="text" name="contact" required placeholder="Email or Phone Number"
                   value={contact} onChange={(e) => setContact(e.target.value)}
-                  className="w-full p-3 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center text-xs"
+                  className="w-full p-2.5 rounded-lg border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center text-xs"
                 />
                 
-                <button type="submit" className="w-full bg-orange-500 text-white py-3 rounded-xl font-black text-sm shadow-lg hover:bg-orange-600 transition-all active:scale-95 mt-1">
+                <button type="submit" className="w-full bg-orange-500 text-white py-2.5 rounded-xl font-black text-xs shadow-lg hover:bg-orange-600 transition-all active:scale-95 mt-1">
                   I’m Interested!
                 </button>
               </form>
             ) : (
               /* Success Window */
-              <div className="py-6 animate-in fade-in text-center">
-                <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span className="text-2xl">✓</span>
+              <div className="py-4 animate-in fade-in text-center">
+                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <span className="text-xl">✓</span>
                 </div>
-                <h2 className="text-xl font-black mb-2 tracking-tighter">SUCCESS!</h2>
-                <p className="text-xs text-slate-600 font-bold px-4 leading-relaxed">
+                <h2 className="text-lg font-black mb-1 tracking-tighter">SUCCESS!</h2>
+                <p className="text-xs text-slate-600 font-bold px-2 leading-relaxed">
                   Thanks, <span className="text-slate-900">{name}</span>! <br/>
                   <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly to finalize your order.
                 </p>
@@ -227,8 +232,9 @@ export default function App() {
           </div>
         )}
       </div>
+      
       {/* Footer */}
-      <p className="mt-4 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
+      <p className="mt-2 text-white/40 text-[9px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
     </div>
   );
 }
