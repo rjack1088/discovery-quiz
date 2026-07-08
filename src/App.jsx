@@ -36,7 +36,7 @@ const boxDetails = {
     name: "Jump Start Fitness Box",
     image: "/images/fitness.jpeg",
     description: "Built for the performance-driven. Clean fuel for your workouts and recovery.",
-    features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink"]
+    features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink (Cranberry-Grape)"]
   },
   health: {
     name: "Jump Start Health Box",
@@ -48,7 +48,7 @@ const boxDetails = {
     name: "The Core Discovery Box",
     image: "/images/core.png",
     description: "The essential 14 experiences across energy, immunity, protein, and electrolytes.",
-    features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Chocolate Berry)", "XS™ CocoWater Hydration Drink Mix"]
+    features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Berry)", "XS™ CocoWater Hydration Drink Mix"]
   },
   sample: {
     name: "The Complete Health & Home Sample Box",
@@ -58,13 +58,13 @@ const boxDetails = {
   },
   fuel: {
     name: "The Mom Fuel Bundle",
-    image: "/images/supermom.png",
+    image: "/images/mom-fuel.png",
     description: "Quick, effective support for on-the-go energy and a simple self-care reset.",
     features: ["XS™ Energy Drink", "Nutrilite™ supplements", "Artistry™ essential skincare", "g&h™ body care"]
   },
   super: {
     name: "The Supermom Bundle",
-    image: "/images//mom-fuel.png",
+    image: "/images/supermom.png",
     description: "Comprehensive coverage for health, beauty, oral, and body care. Your upgraded standard.",
     features: ["Extensive Nutrilite™ health packs", "Artistry™ skincare routine", "g&h™ body care", "Glister™ multi-action oral care", "Nutrilite™ Twist Tubes"]
   }
@@ -118,19 +118,21 @@ export default function App() {
         📍 Free local delivery within 25 mi of Catonsville
       </div>
 
-      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl p-8 text-slate-900 relative">
+      {/* FIXED: Changed max-w-md to max-w-sm and p-8 to p-6 for better desktop constraint */}
+      <div className="max-w-sm w-full bg-white rounded-[2.5rem] shadow-2xl p-6 text-slate-900 relative">
         {!path ? (
           <div className="animate-in fade-in zoom-in text-center">
             <h2 className="text-3xl font-black mb-2 italic">RL FIT</h2>
             <div className="h-1.5 w-10 bg-orange-500 mx-auto mb-6 rounded-full"></div>
-            <h3 className="text-xl font-extrabold text-slate-800 leading-tight mb-8 px-2">
+            <h3 className="text-lg font-extrabold text-slate-800 leading-tight mb-6 px-2">
               Choose a priority to find your perfect box:
             </h3>
-            <div className="space-y-3 text-left">
+            <div className="space-y-2.5 text-left">
               {paths.map(p => (
-                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
-                  <div className="text-2xl mr-4 group-hover:scale-110 transition-transform">{p.icon}</div>
-                  <span className="font-bold text-lg text-slate-700 group-hover:text-orange-600">{p.label}</span>
+                /* FIXED: Adjusted padding slightly so all 4 buttons fit neatly without vertical scrolling */
+                <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-4 px-5 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
+                  <div className="text-xl mr-4 group-hover:scale-110 transition-transform">{p.icon}</div>
+                  <span className="font-bold text-base text-slate-700 group-hover:text-orange-600">{p.label}</span>
                 </button>
               ))}
             </div>
@@ -138,10 +140,10 @@ export default function App() {
         ) : questions[path] && step < questions[path].length ? (
           <div className="animate-in slide-in-from-right-4">
             <button onClick={handleBack} className="mb-6 text-slate-400 text-[10px] font-black uppercase tracking-widest">← Back</button>
-            <h2 className="text-2xl font-black mb-8 leading-tight">{questions[path][step].text}</h2>
+            <h2 className="text-xl font-black mb-6 leading-tight">{questions[path][step].text}</h2>
             <div className="space-y-3">
               {questions[path][step].options.map((opt, i) => (
-                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-5 px-6 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700">
+                <button key={i} onClick={() => handleAnswer(opt.weight)} className="w-full py-4 px-5 rounded-2xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all font-bold text-slate-700 text-left text-base">
                   {opt.text}
                 </button>
               ))}
@@ -151,66 +153,65 @@ export default function App() {
           <div className="text-center animate-in zoom-in">
             <h2 className="text-3xl font-black mb-2 tracking-tighter uppercase leading-none">Your Match</h2>
             
-            <div className="bg-slate-900 text-white overflow-hidden rounded-3xl mb-8 border-b-4 border-orange-500 shadow-xl">
-              {/* Updated Image Logic: White background and object-contain to show full flyers */}
+            <div className="bg-slate-900 text-white overflow-hidden rounded-3xl mb-6 border-b-4 border-orange-500 shadow-xl">
               <div className="bg-white p-2">
                 <img 
                   src={winningBox.image} 
                   alt={winningBox.name} 
-                  className="w-full max-h-[450px] object-contain mx-auto" 
+                  className="w-full max-h-[380px] object-contain mx-auto" 
                 />
               </div>
               
-              <div className="p-6">
-                <p className="font-black text-xl text-orange-400 uppercase leading-tight">{winningBox.name}</p>
+              <div className="p-5">
+                <p className="font-black text-lg text-orange-400 uppercase leading-tight">{winningBox.name}</p>
                 <p className="text-[10px] text-slate-400 mt-2 uppercase font-bold tracking-widest px-2">
                   {winningBox.description}
                 </p>
               </div>
             </div>
 
-            <h4 className="text-sm font-black uppercase tracking-wider text-slate-400 mb-3 text-left px-2">Inside the Box:</h4>
-            <div className="text-left space-y-2 mb-10">
+            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2.5 text-left px-2">Inside the Box:</h4>
+            <div className="text-left space-y-2 mb-8">
               {winningBox.features.map((feature, idx) => (
-                <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center">
-                  <div className="h-5 w-5 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-3 font-bold text-[10px]">✓</div>
-                  <span className="font-bold text-slate-800 text-sm">{feature}</span>
+                <div key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex items-center">
+                  <div className="h-4 w-4 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-3 font-bold text-[9px]">✓</div>
+                  <span className="font-bold text-slate-800 text-xs">{feature}</span>
                 </div>
               ))}
             </div>
 
             {!submitted ? (
-              <form name="discovery-leads" method="POST" data-netlify="true" onSubmit={handleFinalSubmit} className="space-y-4 px-2">
+              <form name="discovery-leads" method="POST" data-netlify="true" onSubmit={handleFinalSubmit} className="space-y-3 px-1">
                 <input type="hidden" name="form-name" value="discovery-leads" />
                 <input type="hidden" name="recommendedBox" value={winningBox.name} />
                 
-                <p className="text-xs text-slate-500 font-bold leading-relaxed mb-6">
+                <p className="text-[11px] text-slate-500 font-bold leading-relaxed mb-4">
                   Ready to order? Enter your info below and Ryan or Lena will reach out to coordinate your local delivery!
                 </p>
                 
                 <input 
                   type="text" name="name" required placeholder="Your Name"
                   value={name} onChange={(e) => setName(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
+                  className="w-full p-3.5 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center text-sm"
                 />
 
                 <input 
                   type="text" name="contact" required placeholder="Email or Phone Number"
                   value={contact} onChange={(e) => setContact(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center"
+                  className="w-full p-3.5 rounded-xl border-2 border-slate-100 outline-none focus:border-orange-500 font-medium text-center text-sm"
                 />
                 
-                <button type="submit" className="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-lg hover:bg-orange-600 transition-all active:scale-95">
+                <button type="submit" className="w-full bg-orange-500 text-white py-3.5 rounded-2xl font-black text-base shadow-lg hover:bg-orange-600 transition-all active:scale-95 mt-2">
                   I’m Interested!
                 </button>
               </form>
             ) : (
-              <div className="py-12 animate-in fade-in text-center">
-                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-4xl">✓</span>
+              <div className="py-8 animate-in fade-in text-center">
+                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">✓</span>
                 </div>
-                <h2 className="text-2xl font-black mb-4 tracking-tighter">SUCCESS!</h2>
-                <p className="text-slate-600 font-bold px-4 leading-relaxed">
+                <h2 className="text-xl font-black mb-3 tracking-tighter">SUCCESS!</h2>
+                <p className="text-sm text-slate-600 font-bold px-4 leading-relaxed">
                   Thanks, <span className="text-slate-900">{name}</span>! <br/>
                   <span className="text-orange-600">Ryan or Lena</span> will be in touch with you shortly to finalize your order.
                 </p>
@@ -219,7 +220,7 @@ export default function App() {
           </div>
         )}
       </div>
-      <p className="mt-8 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
+      <p className="mt-6 text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
     </div>
   );
 }
