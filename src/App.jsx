@@ -113,16 +113,16 @@ export default function App() {
   };
 
   return (
-    /* Changed min-h-screen to h-screen and removed scrolling overflow so it locks to the viewport */
-    <div className="h-screen w-full bg-slate-900 flex flex-col items-center justify-center p-3 font-sans text-white overflow-hidden">
+    /* Changed back to min-h-screen so mobile keyboards can scroll normally when open */
+    <div className="min-h-screen w-full bg-slate-900 flex flex-col items-center justify-center p-3 font-sans text-white">
       
-      {/* Ultra-compact top banner */}
-      <div className="mb-2 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 text-[9px] font-black uppercase tracking-widest text-orange-400">
+      {/* Top banner sits neatly right above the card now */}
+      <div className="mb-2.5 bg-orange-500/20 px-3.5 py-1 rounded-full border border-orange-500/30 text-[9px] font-black uppercase tracking-widest text-orange-400">
         📍 Free local delivery within 25 mi of Catonsville
       </div>
 
-      {/* Aggressively trimmed card padding: p-4 instead of p-5/p-8, max-w-sm */}
-      <div className="max-w-sm w-full bg-white rounded-[2rem] shadow-2xl p-4 text-slate-900 relative my-auto">
+      {/* REMOVED 'my-auto' so it doesn't shove the banner to the ceiling on mobile screens */}
+      <div className="max-w-sm w-full bg-white rounded-[2rem] shadow-2xl p-4 text-slate-900 relative">
         {!path ? (
           /* Step 0: Initial Selection */
           <div className="animate-in fade-in zoom-in text-center">
@@ -133,10 +133,8 @@ export default function App() {
               Choose a priority to find your perfect box:
             </h3>
             
-            {/* Reduced spacing between buttons from space-y-2 to space-y-1.5 */}
             <div className="space-y-1.5 text-left">
               {paths.map(p => (
-                /* Slimmed button padding: py-2.5 px-3 instead of py-3/py-4 */
                 <button key={p.id} onClick={() => setPath(p.id)} className="w-full py-2.5 px-3.5 rounded-xl border-2 border-slate-100 hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center group shadow-sm active:scale-[0.98]">
                   <div className="text-base mr-3 group-hover:scale-110 transition-transform">{p.icon}</div>
                   <span className="font-bold text-xs text-slate-700 group-hover:text-orange-600">{p.label}</span>
@@ -159,12 +157,11 @@ export default function App() {
           </div>
         ) : (
           /* Step 2: Results Display with Image Rendering */
-          <div className="text-center animate-in zoom-in max-h-[80vh] overflow-y-auto px-1">
+          <div className="text-center animate-in zoom-in max-h-[75vh] overflow-y-auto px-1">
             <h2 className="text-xl font-black mb-1 tracking-tighter uppercase leading-none">Your Match</h2>
             
             <div className="bg-slate-900 text-white overflow-hidden rounded-2xl mb-3 border-b-4 border-orange-500 shadow-xl">
               <div className="bg-white p-1">
-                {/* Max height trimmed down to 220px to prevent viewport overflow on short laptops */}
                 <img 
                   src={winningBox.image} 
                   alt={winningBox.name} 
@@ -234,7 +231,7 @@ export default function App() {
       </div>
       
       {/* Footer */}
-      <p className="mt-2 text-white/40 text-[9px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
+      <p className="mt-3 text-white/40 text-[9px] font-black uppercase tracking-[0.4em]">Est. 2018 • Catonsville, MD</p>
     </div>
   );
 }
