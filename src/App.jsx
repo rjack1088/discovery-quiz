@@ -48,7 +48,7 @@ const boxDetails = {
     name: "The Core Discovery Box",
     image: "/images/core.png",
     description: "The essential 14 experiences across energy, immunity, protein, and electrolytes.",
-    features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Berry)", "XS™ CocoWater Hydration Drink Mix"]
+    features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Chocolate Berry)", "XS™ CocoWater Hydration Drink Mix"]
   },
   sample: {
     name: "The Complete Health & Home Sample Box",
