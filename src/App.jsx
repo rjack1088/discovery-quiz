@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { boxes, getBoxItems } from './data/boxes';
+import BoxFlyer from './components/BoxFlyer';
 
 // Main paths based on your categories
 const paths = [
@@ -30,46 +32,6 @@ const questions = {
   ]
 };
 
-// Box details with updated .jpeg extensions and object-fit logic
-const boxDetails = {
-  fitness: {
-    name: "Jump Start Fitness Box",
-    image: "/images/fitness.jpeg",
-    description: "Built for the performance-driven. Clean fuel for your workouts and recovery.",
-    features: ["XS™ Whey Protein Powder", "XS™ Muscle Multiplier", "XS™ Energy Drink (Cranberry-Grape)"]
-  },
-  health: {
-    name: "Jump Start Health Box",
-    image: "/images/jshealth.jpeg",
-    description: "A solid foundation for optimal wellness, focusing on vitamins, nutrients, and antioxidant support.",
-    features: ["Nutrilite™ Perfect Pack", "Nutrilite™ Concentrated Fruits & Veggies", "Nutrilite™ Twist Tubes (Immunity)"]
-  },
-  discovery: {
-    name: "The Core Discovery Box",
-    image: "/images/core.png",
-    description: "The essential 14 experiences across energy, immunity, protein, and electrolytes.",
-    features: ["Nutrilite™ Ultra Focus + Energy Packs", "XS™ Energy Drinks (Citrus & Cranberry-Grape)", "XS™ Protein Bars (Peanut Butter & Chocolate Berry)", "XS™ CocoWater Hydration Drink Mix"]
-  },
-  sample: {
-    name: "The Complete Health & Home Sample Box",
-    image: "/images/health.png",
-    description: "A perfect sampler to upgrade your daily routine from skincare to a sparkling clean home.",
-    features: ["Nutrilite™ Supplements", "XS™ Energy", "Artistry™ Skincare", "Glister™ Oral Care", "g&h™ Body Care", "Amway Home™ Multi-Purpose Cleaner"]
-  },
-  fuel: {
-    name: "The Mom Fuel Bundle",
-    image: "/images/mom-fuel.png",
-    description: "Quick, effective support for on-the-go energy and a simple self-care reset.",
-    features: ["XS™ Energy Drink", "Nutrilite™ supplements", "Artistry™ essential skincare", "g&h™ body care"]
-  },
-  super: {
-    name: "The Supermom Bundle",
-    image: "/images/supermom.png",
-    description: "Comprehensive coverage for health, beauty, oral, and body care. Your upgraded standard.",
-    features: ["Extensive Nutrilite™ health packs", "Artistry™ skincare routine", "g&h™ body care", "Glister™ multi-action oral care", "Nutrilite™ Twist Tubes"]
-  }
-};
-
 export default function App() {
   const [path, setPath] = useState(null);
   const [step, setStep] = useState(0);
@@ -96,7 +58,9 @@ export default function App() {
   else if (path === 'routine') winningBoxKey = scores['discovery'] ? 'discovery' : 'sample';
   else if (path === 'moms') winningBoxKey = scores['fuel'] ? 'fuel' : 'super';
 
-  const winningBox = boxDetails[winningBoxKey] || boxDetails['discovery'];
+  const resolvedBoxKey = boxes[winningBoxKey] ? winningBoxKey : 'discovery';
+  const winningBox = boxes[resolvedBoxKey];
+  const winningItems = getBoxItems(resolvedBoxKey);
 
   const handleFinalSubmit = (e) => {
     e.preventDefault();
@@ -156,35 +120,12 @@ export default function App() {
             </div>
           </div>
         ) : (
-          /* Step 2: Results Display with Image Rendering */
+          /* Step 2: Results Display */
           <div className="text-center animate-in zoom-in max-h-[75vh] overflow-y-auto px-1">
             <h2 className="text-xl font-black mb-1 tracking-tighter uppercase leading-none">Your Match</h2>
-            
-            <div className="bg-slate-900 text-white overflow-hidden rounded-2xl mb-3 border-b-4 border-orange-500 shadow-xl">
-              <div className="bg-white p-1">
-                <img 
-                  src={winningBox.image} 
-                  alt={winningBox.name} 
-                  className="w-full max-h-[220px] object-contain mx-auto" 
-                />
-              </div>
-              
-              <div className="p-3">
-                <p className="font-black text-sm text-orange-400 uppercase leading-tight">{winningBox.name}</p>
-                <p className="text-[8px] text-slate-400 mt-1 uppercase font-bold tracking-widest px-1">
-                  {winningBox.description}
-                </p>
-              </div>
-            </div>
 
-            <h4 className="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1.5 text-left px-1">Inside the Box:</h4>
-            <div className="text-left space-y-1 mb-4">
-              {winningBox.features.map((feature, idx) => (
-                <div key={idx} className="bg-slate-50 p-2 rounded-lg border border-slate-100 flex items-center">
-                  <div className="h-3.5 w-3.5 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mr-2 font-bold text-[8px]">✓</div>
-                  <span className="font-bold text-slate-800 text-[11px]">{feature}</span>
-                </div>
-              ))}
+            <div className="mb-4">
+              <BoxFlyer box={winningBox} items={winningItems} size="card" />
             </div>
 
             {!submitted ? (
