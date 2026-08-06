@@ -130,9 +130,14 @@ export default function App() {
 
             {!submitted ? (
               /* Lead Capture Form */
-              <form name="discovery-leads" method="POST" data-netlify="true" onSubmit={handleFinalSubmit} className="space-y-2 px-1">
+              <form name="discovery-leads" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleFinalSubmit} className="space-y-2 px-1">
                 <input type="hidden" name="form-name" value="discovery-leads" />
                 <input type="hidden" name="recommendedBox" value={winningBox.name} />
+                <p className="hidden">
+                  <label>
+                    Don't fill this out if you're human: <input name="bot-field" />
+                  </label>
+                </p>
                 
                 <p className="text-[9px] text-slate-500 font-bold leading-relaxed mb-2">
                   Ready to order? Enter your info below and Ryan or Lena will reach out to coordinate your local delivery!
