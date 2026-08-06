@@ -1,6 +1,10 @@
+const GUARANTEE_TEXT =
+  'If for any reason you are not completely satisfied with our products, you may return them within 180 days of purchase for an exchange or refund of the product price and applicable tax.';
+
 // Renders a box's "what's inside" flyer: a title/logo header plus a grid of item
 // photos + names. `size="card"` fits the in-app results card; `size="export"` is a
-// fixed 1080x1080 canvas meant to be rasterized to a downloadable PNG.
+// fixed-width (1080px) canvas meant to be rasterized to a downloadable PNG — its
+// height grows with the item count instead of being fixed, so it never clips.
 export default function BoxFlyer({ box, items, size = 'card' }) {
   const isExport = size === 'export';
 
@@ -8,7 +12,7 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
     <div
       className={
         isExport
-          ? 'w-[1080px] h-[1080px] bg-slate-900 text-white flex flex-col p-14 border-b-[10px] border-orange-500 box-border'
+          ? 'w-[1080px] bg-slate-900 text-white flex flex-col p-14 border-b-[10px] border-orange-500 box-border'
           : 'bg-slate-900 text-white rounded-2xl overflow-hidden border-b-4 border-orange-500 shadow-xl'
       }
     >
@@ -32,7 +36,7 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
         {box.description}
       </p>
 
-      <div className={isExport ? 'flex flex-wrap content-start justify-center gap-6 flex-1' : 'flex flex-wrap content-start justify-center gap-1.5 px-3 pb-3'}>
+      <div className={isExport ? 'flex flex-wrap content-start justify-center gap-6' : 'flex flex-wrap content-start justify-center gap-1.5 px-3 pb-3'}>
         {items.map((item, idx) => (
           <div
             key={idx}
@@ -50,7 +54,11 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
         ))}
       </div>
 
-      <p className={isExport ? 'text-center text-slate-500 text-sm font-black uppercase tracking-[0.3em] mt-10' : 'text-center text-slate-500 text-[7px] font-black uppercase tracking-[0.3em] py-2'}>
+      <p className={isExport ? 'text-center text-slate-500 text-sm leading-snug mt-8 px-6' : 'text-center text-slate-500 text-[6px] leading-snug px-3 mt-1'}>
+        {GUARANTEE_TEXT}
+      </p>
+
+      <p className={isExport ? 'text-center text-slate-500 text-sm font-black uppercase tracking-[0.3em] mt-6' : 'text-center text-slate-500 text-[7px] font-black uppercase tracking-[0.3em] py-2'}>
         Est. 2018 • Catonsville, MD
       </p>
     </div>
