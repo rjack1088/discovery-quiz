@@ -52,6 +52,15 @@ export default function App() {
     else setStep(prev => prev - 1);
   };
 
+  const handleRestart = () => {
+    setPath(null);
+    setStep(0);
+    setScores({});
+    setSubmitted(false);
+    setName('');
+    setContact('');
+  };
+
   let winningBoxKey;
   if (path === 'fitness') winningBoxKey = 'fitness';
   else if (path === 'health') winningBoxKey = 'health';
@@ -127,6 +136,10 @@ export default function App() {
             <div className="mb-4">
               <BoxFlyer box={winningBox} items={winningItems} size="card" />
             </div>
+
+            <button onClick={handleRestart} className="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-3">
+              Not happy with the result? Click to restart the quiz
+            </button>
 
             {!submitted ? (
               /* Lead Capture Form */
