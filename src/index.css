@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@keyframes flip-hint-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+}
+
+.flip-hint-badge {
+  animation: flip-hint-pulse 1s ease-in-out 2;
+}

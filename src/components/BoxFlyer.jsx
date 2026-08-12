@@ -1,3 +1,5 @@
+import ProductFlipCard from './ProductFlipCard';
+
 const GUARANTEE_TEXT =
   'If for any reason you are not completely satisfied with our products, you may return them within 180 days of purchase for an exchange or refund of the product price and applicable tax.';
 
@@ -37,21 +39,25 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
       </p>
 
       <div className={isExport ? 'flex flex-wrap content-start justify-center gap-6' : 'flex flex-wrap content-start justify-center gap-1.5 px-3 pb-3'}>
-        {items.map((item, idx) => (
-          <div
-            key={idx}
-            className={isExport ? 'w-[calc(33.333%-16px)] bg-white rounded-2xl p-5 flex flex-col items-center text-center justify-center' : 'w-[calc(50%-3px)] bg-white rounded-lg p-1.5 flex flex-col items-center text-center'}
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className={isExport ? 'w-full h-40 object-contain mb-3' : 'w-full h-14 object-contain mb-1'}
-            />
-            <span className={isExport ? 'text-slate-900 font-bold text-sm leading-tight' : 'text-slate-900 font-bold text-[7px] leading-tight'}>
-              {item.name}
-            </span>
-          </div>
-        ))}
+        {items.map((item, idx) =>
+          isExport ? (
+            <div
+              key={idx}
+              className="w-[calc(33.333%-16px)] bg-white rounded-2xl p-5 flex flex-col items-center text-center justify-center"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-40 object-contain mb-3"
+              />
+              <span className="text-slate-900 font-bold text-sm leading-tight">
+                {item.name}
+              </span>
+            </div>
+          ) : (
+            <ProductFlipCard key={idx} item={item} />
+          )
+        )}
       </div>
 
       <p className={isExport ? 'text-center text-slate-500 text-sm leading-snug mt-8 px-6' : 'text-center text-slate-500 text-[6px] leading-snug px-3 mt-1'}>
