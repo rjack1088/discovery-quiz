@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-// A product tile that flips to reveal highlight bullets. Uses real hover on
-// devices with a mouse (matchMedia checked once via lazy state init); falls
-// back to tap-to-toggle on touch devices, since CSS-only :hover behaves
-// inconsistently there. Only used for BoxFlyer's "card" size — the static
-// export tiles never need this since a flip interaction is meaningless on a
-// downloaded PNG.
-export default function ProductFlipCard({ item }) {
+// A product tile showing highlight bullets. On devices with a mouse (matchMedia
+// checked once via lazy state init), hovering flips the tile in place. On touch
+// devices, tapping opens a larger centered overlay instead — the flipped tile's
+// back face is too small to read comfortably on mobile. Only used for BoxFlyer's
+// "card" size — the static export tiles never need this since neither
+// interaction makes sense on a downloaded PNG.
+export default function ProductFlipCard({ item, onOpen }) {
   const [flipped, setFlipped] = useState(false);
   const [canHover] = useState(() => window.matchMedia('(hover: hover) and (pointer: fine)').matches);
 
@@ -17,7 +17,7 @@ export default function ProductFlipCard({ item }) {
       className="w-[calc(50%-3px)] h-24 [perspective:600px]"
       onMouseEnter={() => canHover && setFlipped(true)}
       onMouseLeave={() => canHover && setFlipped(false)}
-      onClick={() => !canHover && setFlipped((f) => !f)}
+      onClick={() => !canHover && onOpen(item)}
     >
       <div
         className="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]"
@@ -41,7 +41,7 @@ export default function ProductFlipCard({ item }) {
           </span>
         </div>
 
-        {/* Back */}
+        {/* Back (desktop hover only — touch uses ProductDetailOverlay instead) */}
         <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-slate-800 rounded-lg p-1.5 flex flex-col items-center justify-center text-center overflow-hidden">
           <ul className="space-y-0.5">
             {highlights.slice(0, 4).map((point, i) => (

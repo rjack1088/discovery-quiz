@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import ProductFlipCard from './ProductFlipCard';
+import ProductDetailOverlay from './ProductDetailOverlay';
 
 const GUARANTEE_TEXT =
   'If for any reason you are not completely satisfied with our products, you may return them within 180 days of purchase for an exchange or refund of the product price and applicable tax.';
@@ -9,6 +11,7 @@ const GUARANTEE_TEXT =
 // height grows with the item count instead of being fixed, so it never clips.
 export default function BoxFlyer({ box, items, size = 'card' }) {
   const isExport = size === 'export';
+  const [openItem, setOpenItem] = useState(null);
 
   return (
     <div
@@ -55,10 +58,12 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
               </span>
             </div>
           ) : (
-            <ProductFlipCard key={idx} item={item} />
+            <ProductFlipCard key={idx} item={item} onOpen={setOpenItem} />
           )
         )}
       </div>
+
+      {!isExport && <ProductDetailOverlay item={openItem} onClose={() => setOpenItem(null)} />}
 
       <p className={isExport ? 'text-center text-slate-500 text-sm leading-snug mt-8 px-6' : 'text-center text-slate-500 text-[6px] leading-snug px-3 mt-1'}>
         {GUARANTEE_TEXT}
