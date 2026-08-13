@@ -21,25 +21,24 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
           : 'bg-slate-900 text-white rounded-2xl overflow-hidden border-b-4 border-orange-500 shadow-xl'
       }
     >
-      <div className={isExport ? 'flex items-center justify-between mb-8' : 'flex items-center justify-between p-3 pb-2'}>
-        <div>
-          <p className={isExport ? 'text-orange-400 font-black uppercase tracking-widest text-xl' : 'text-orange-400 font-black uppercase tracking-widest text-[9px]'}>
-            RL FIT
-          </p>
-          <h2 className={isExport ? 'text-5xl font-black uppercase tracking-tight leading-none mt-2' : 'text-sm font-black uppercase tracking-tight leading-none mt-0.5'}>
-            {box.name}
-          </h2>
-        </div>
-        <img
-          src="/images/rlfit-logo.png"
-          alt="RL FIT"
-          className={isExport ? 'w-20 h-20 rounded-2xl' : 'w-8 h-8 rounded-lg'}
-        />
+      <div className={isExport ? 'text-center mb-8' : 'text-center p-3 pb-2'}>
+        <p className={isExport ? 'text-orange-400 font-black uppercase tracking-widest text-xl' : 'text-orange-400 font-black uppercase tracking-widest text-[9px]'}>
+          RL FIT
+        </p>
+        <h2 className={isExport ? 'text-5xl font-black uppercase tracking-tight leading-none mt-2' : 'text-sm font-black uppercase tracking-tight leading-none mt-0.5'}>
+          {box.name}
+        </h2>
       </div>
 
-      <p className={isExport ? 'text-slate-400 text-lg font-bold mb-10 leading-snug' : 'text-slate-400 text-[8px] font-bold px-3 mb-2 leading-relaxed'}>
+      <p className={isExport ? 'text-slate-400 text-lg font-bold mb-10 leading-snug text-center' : 'text-slate-400 text-[8px] font-bold px-3 mb-2 leading-relaxed text-center'}>
         {box.description}
       </p>
+
+      {!isExport && (
+        <p className="text-orange-400 text-[7px] font-black uppercase tracking-widest text-center italic px-3 mb-2">
+          Click each product to learn more!
+        </p>
+      )}
 
       <div className={isExport ? 'flex flex-wrap content-start justify-center gap-6' : 'flex flex-wrap content-start justify-center gap-1.5 px-3 pb-3'}>
         {items.map((item, idx) =>
@@ -72,6 +71,12 @@ export default function BoxFlyer({ box, items, size = 'card' }) {
       <p className={isExport ? 'text-center text-slate-500 text-sm font-black uppercase tracking-[0.3em] mt-6' : 'text-center text-slate-500 text-[7px] font-black uppercase tracking-[0.3em] py-2'}>
         Est. 2018 • Catonsville, MD
       </p>
+
+      <img
+        src="/images/rlfit-logo.png"
+        alt="RL FIT"
+        className={isExport ? 'w-16 h-16 rounded-2xl mx-auto mt-6' : 'w-6 h-6 rounded-lg mx-auto mb-2'}
+      />
     </div>
   );
 }

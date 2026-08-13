@@ -138,7 +138,7 @@ export default function App() {
             </div>
 
             <button onClick={handleRestart} className="text-slate-400 text-[9px] font-black uppercase tracking-widest mb-3">
-              Not happy with the result? Click to restart the quiz
+              Discover more box options — retake the quiz
             </button>
 
             {!submitted ? (

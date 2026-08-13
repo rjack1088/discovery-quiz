@@ -25,12 +25,6 @@ export default function ProductFlipCard({ item, onOpen }) {
       >
         {/* Front */}
         <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-lg p-1.5 flex flex-col items-center text-center">
-          {/* Hover already flips the card on desktop, so the badge would be redundant there — only touch devices need the tap cue */}
-          {!canHover && (
-            <span className="absolute top-0.5 right-0.5 w-3 h-3 rounded-full bg-orange-500 text-white text-[6px] leading-3 text-center flip-hint-badge">
-              i
-            </span>
-          )}
           <img
             src={item.image}
             alt={item.name}
